@@ -54,7 +54,7 @@ class Library:
             new_isbn = self.generate_isbn13()
             book_object.isbn = new_isbn
             self._library_books[new_isbn] = book_object
-            print('Book added')
+            #print('Book added')
 
     def is_book_added(self, book_object: Book) -> bool:
         for existing_book in self._library_books.values():
@@ -62,12 +62,6 @@ class Library:
                     existing_book.author.lower() == book_object.author.lower()):
                 return True
         return False
-
-        # isbn = book_object.isbn
-        # for key in self._library_books.keys():
-        #     if isbn == key:
-        #         return True
-        # return False
 
     def register_user(self, user_object: User) -> None:
         # check if user is already registered
@@ -79,7 +73,7 @@ class Library:
             generated_id = self.generate_user_id()
             user_object.user_id = generated_id # pass the id identifier to the user instance
             self._library_users[generated_id] = user_object
-            print('User registered')
+            #print('User registered')
 
 
     def is_user_registered(self, user_object) -> bool:
@@ -92,23 +86,27 @@ class Library:
     # def search_book(self, title):
     #     return self._library_books.get(title, None)
 
+    # Display Methods
     def display_library_info(self):
         return self._library_name
 
     def list_library_books(self):
-        return self._library_books
+        books = {}
+        for key, value in self._library_books.items():
+            books[key] = f"{value.title.title()} by {value.author.title()}"
+        return books
 
     def list_library_users(self):
-        # new_dict = {}
-        # for key, value in self._library_users.items():
-        #     new_dict[str(key)] = value.user_id
-        # return new_dict
-        return self._library_users
+        #return self._library_users
+        users = {}
+        for key, value in self._library_users.items():
+            users[key] = value.username
+        return users
 
-    # generation methods:
+    # Generation Methods:
     @staticmethod
-    def generate_user_id() -> uuid.UUID:
-        return uuid.uuid4()
+    def generate_user_id() -> str:
+        return uuid.uuid4().hex # need it to have a regular string value rather than uuid object for JSON
 
     @staticmethod
     def generate_isbn13():
